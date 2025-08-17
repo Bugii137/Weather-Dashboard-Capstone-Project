@@ -1,28 +1,29 @@
+// src/components/SearchBar.jsx
 import { useState } from "react";
 
-function Search({ onSearch }) {
+function SearchBar({ onSearch }) {
   const [city, setCity] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (city.trim() !== "") {
+    if (city.trim()) {
       onSearch(city);
-      setCity("");
+      setCity(""); // reset input
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-center mt-6">
+    <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
       <input
         type="text"
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        placeholder="Enter city"
-        className="border rounded-l px-4 py-2 w-64"
+        placeholder="Enter city..."
+        className="px-4 py-2 border rounded w-full"
       />
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 rounded-r"
+        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
         Search
       </button>
@@ -30,5 +31,4 @@ function Search({ onSearch }) {
   );
 }
 
-export default Search;
-import React from "react";
+export default SearchBar;

@@ -1,36 +1,30 @@
+// src/App.jsx
 import { useState } from "react";
-import Search from "./components/Search";
+import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
+import { fetchWeather } from "./services/weatherApi";
 
 function App() {
   const [weather, setWeather] = useState(null);
+  const [error, setError] = useState("");
 
-  const fetchWeather = async (city) => {
+  const handleSearch = async (city) => {
     try {
-      console.log("Searching for:", city);
-      const res = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${
-          import.meta.env.VITE_OPENWEATHER_KEY
-        }&units=metric`
-      );
-      const data = await res.json();
-      console.log("API response:", data);
-
-      if (data.cod === 200) {
-        setWeather(data);
-      } else {
-        alert("City not found!");
-      }
+      setError("");
+      const data = await fetchWeather(city);
+      setWeather(data);
     } catch (err) {
-      console.error("Error fetching weather:", err);
+      setWeather(null);
+      setError("City not found. Try again.");
     }
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold text-center">Weather Dashboard</h1>
-      <Search onSearch={fetchWeather} />
-      {weather && <WeatherCard weather={weather} />}
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
+      <h1 className="text-3xl font-bold mb-6">Weather Dashboard 🌤️</h1>
+      <SearchBar onSearch={handleSearch} />
+      {error && <p className="text-red-500 mb-4">{error}</p>}
+      <WeatherCard weather={weather} />
     </div>
   );
 }
