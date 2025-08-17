@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-function SearchBar({ onSearch }) {
+function Search({ onSearch }) {
   const [city, setCity] = useState("");
 
   const handleSubmit = (e) => {
@@ -12,19 +12,19 @@ function SearchBar({ onSearch }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex gap-2 justify-center my-6">
+    <form onSubmit={handleSubmit} className="flex gap-2 justify-center mt-6">
       <input
         type="text"
-        placeholder="Enter city..."
         value={city}
         onChange={(e) => setCity(e.target.value)}
-        className="border rounded p-2 w-64"
+        placeholder="Enter city name..."
+        className="border p-2 rounded w-64"
       />
-      <button type="submit" className="bg-blue-500 text-white px-4 py-2 rounded">
+      <button type="submit" className="bg-blue-500 text-white px-4 rounded">
         Search
       </button>
     </form>
   );
 }
 
-export default SearchBar;
+export default Search;
