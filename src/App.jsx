@@ -1,30 +1,36 @@
-// src/App.jsx
 import { useState } from "react";
 import SearchBar from "./components/SearchBar";
 import WeatherCard from "./components/WeatherCard";
+import ErrorMessage from "./components/ErrorMessage";
 import { fetchWeather } from "./services/weatherApi";
 
 function App() {
-  const [weather, setWeather] = useState(null);
+  const [city, setCity] = useState("");
+  const [weatherData, setWeatherData] = useState(null);
   const [error, setError] = useState("");
 
-  const handleSearch = async (city) => {
+  const handleSearch = async (cityName) => {
     try {
-      setError("");
-      const data = await fetchWeather(city);
-      setWeather(data);
-    } catch (err) {
-      setWeather(null);
-      setError("City not found. Try again.");
+      const data = await fetchWeather(cityName);
+      if (data.cod === 200) {
+        setWeatherData(data);
+        setError("");
+      } else {
+        setError(data.message);
+        setWeatherData(null);
+      }
+    } catch {
+      setError("Network error. Try again.");
+      setWeatherData(null);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center p-6">
-      <h1 className="text-3xl font-bold mb-6">Weather Dashboard 🌤️</h1>
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+      <h1 className="text-3xl font-bold text-center mb-6 text-gray-800 dark:text-white">Weather Dashboard</h1>
       <SearchBar onSearch={handleSearch} />
-      {error && <p className="text-red-500 mb-4">{error}</p>}
-      <WeatherCard weather={weather} />
+      {error && <ErrorMessage error={error} />}
+      {weatherData && <WeatherCard weatherData={weatherData} />}
     </div>
   );
 }

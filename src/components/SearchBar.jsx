@@ -1,14 +1,13 @@
-// src/components/SearchBar.jsx
 import { useState } from "react";
 
-function SearchBar({ onSearch }) {
-  const [city, setCity] = useState("");
+export default function SearchBar({ onSearch }) {
+  const [query, setQuery] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (city.trim()) {
-      onSearch(city);
-      setCity(""); // reset input
+    if (query.trim() !== "") {
+      onSearch(query);
+      setQuery("");
     }
   };
 
@@ -16,19 +15,14 @@ function SearchBar({ onSearch }) {
     <form onSubmit={handleSubmit} className="flex gap-2 mb-6">
       <input
         type="text"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-        placeholder="Enter city..."
-        className="px-4 py-2 border rounded w-full"
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        placeholder="Enter city name..."
+        className="px-4 py-2 rounded-lg text-black w-64"
       />
-      <button
-        type="submit"
-        className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-      >
+      <button type="submit" className="px-4 py-2 bg-blue-600 rounded-lg hover:bg-blue-700">
         Search
       </button>
     </form>
   );
 }
-
-export default SearchBar;
